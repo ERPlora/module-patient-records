@@ -1,0 +1,62 @@
+{% load djicons i18n %}
+
+<div class="side-sheet-header">
+    <h3 class="sheet-title">{% trans "Add Treatment" %}</h3>
+    <button class="sheet-close" @click="closePanel()">{% icon "close-outline" %}</button>
+</div>
+
+<div class="side-sheet-content">
+    <form id="add-treatment-form"
+          hx-post="{% url 'patient_records:treatment_add' %}"
+          hx-target="#datatable-body"
+          hx-swap="innerHTML"
+          @htmx:after-request="closePanel()"
+          class="flex flex-col gap-4 p-6">
+        {% csrf_token %}
+
+        {% if error %}
+        <div class="callout callout-error">
+            <div class="callout-content"><span class="callout-text">{{ error }}</span></div>
+        </div>
+        {% endif %}
+
+        <div>
+            <label class="text-sm font-medium mb-1 block">{% trans "Date" %}</label>
+            <input type="date" name="date" class="input input-sm w-full">
+        </div>
+
+        <div>
+            <label class="text-sm font-medium mb-1 block">{% trans "Description" %}</label>
+            <textarea name="description" class="textarea textarea-sm w-full" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label class="text-sm font-medium mb-1 block">{% trans "Diagnosis" %}</label>
+            <textarea name="diagnosis" class="textarea textarea-sm w-full" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label class="text-sm font-medium mb-1 block">{% trans "Prescription" %}</label>
+            <textarea name="prescription" class="textarea textarea-sm w-full" rows="3"></textarea>
+        </div>
+
+        <div>
+            <label class="text-sm font-medium mb-1 block">{% trans "Practitioner Id" %}</label>
+            <input type="text" name="practitioner_id" class="input input-sm w-full" placeholder="{% trans 'Practitioner Id' %}">
+        </div>
+
+        <div>
+            <label class="text-sm font-medium mb-1 block">{% trans "Notes" %}</label>
+            <textarea name="notes" class="textarea textarea-sm w-full" rows="3"></textarea>
+        </div>
+    </form>
+</div>
+
+<div class="side-sheet-footer">
+    <div class="flex justify-end gap-2">
+        <button type="button" class="btn btn-ghost btn-sm" @click="closePanel()">{% trans "Cancel" %}</button>
+        <button type="submit" form="add-treatment-form" class="btn btn-sm color-primary">
+            {% icon "add-outline" %} {% trans "Add" %}
+        </button>
+    </div>
+</div>
