@@ -12,33 +12,33 @@
                     </label>
                 </th>
                 <th class="datatable-th datatable-th-center">{% trans "Status" %}</th>
-                <th class="datatable-th datatable-th-sortable{% if sort_field == 'patient_name' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
+                <th class="cursor-pointer datatable-th datatable-th-sortable{% if sort_field == 'patient_name' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
                     hx-get="{% url 'patient_records:patient_records_list' %}?sort=patient_name&dir={% if sort_field == 'patient_name' and sort_dir == 'asc' %}desc{% else %}asc{% endif %}"
-                    hx-target="#datatable-body" hx-include="#patient_records-datatable" style="cursor: pointer;">
+                    hx-target="#datatable-body" hx-include="#patient_records-datatable">
                     {% trans "Patient Name" %}
                     <span class="datatable-sort-icon">{% icon "chevron-up-outline" %}</span>
                 </th>
-                <th class="datatable-th datatable-th-sortable{% if sort_field == 'date_of_birth' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
+                <th class="cursor-pointer datatable-th datatable-th-sortable{% if sort_field == 'date_of_birth' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
                     hx-get="{% url 'patient_records:patient_records_list' %}?sort=date_of_birth&dir={% if sort_field == 'date_of_birth' and sort_dir == 'asc' %}desc{% else %}asc{% endif %}"
-                    hx-target="#datatable-body" hx-include="#patient_records-datatable" style="cursor: pointer;">
+                    hx-target="#datatable-body" hx-include="#patient_records-datatable">
                     {% trans "Date Of Birth" %}
                     <span class="datatable-sort-icon">{% icon "chevron-up-outline" %}</span>
                 </th>
-                <th class="datatable-th datatable-th-sortable{% if sort_field == 'gender' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
+                <th class="cursor-pointer datatable-th datatable-th-sortable{% if sort_field == 'gender' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
                     hx-get="{% url 'patient_records:patient_records_list' %}?sort=gender&dir={% if sort_field == 'gender' and sort_dir == 'asc' %}desc{% else %}asc{% endif %}"
-                    hx-target="#datatable-body" hx-include="#patient_records-datatable" style="cursor: pointer;">
+                    hx-target="#datatable-body" hx-include="#patient_records-datatable">
                     {% trans "Gender" %}
                     <span class="datatable-sort-icon">{% icon "chevron-up-outline" %}</span>
                 </th>
-                <th class="datatable-th datatable-th-sortable{% if sort_field == 'blood_type' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
+                <th class="cursor-pointer datatable-th datatable-th-sortable{% if sort_field == 'blood_type' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
                     hx-get="{% url 'patient_records:patient_records_list' %}?sort=blood_type&dir={% if sort_field == 'blood_type' and sort_dir == 'asc' %}desc{% else %}asc{% endif %}"
-                    hx-target="#datatable-body" hx-include="#patient_records-datatable" style="cursor: pointer;">
+                    hx-target="#datatable-body" hx-include="#patient_records-datatable">
                     {% trans "Blood Type" %}
                     <span class="datatable-sort-icon">{% icon "chevron-up-outline" %}</span>
                 </th>
-                <th class="datatable-th datatable-th-sortable{% if sort_field == 'allergies' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
+                <th class="cursor-pointer datatable-th datatable-th-sortable{% if sort_field == 'allergies' %} datatable-th-sorted{% if sort_dir == 'desc' %} datatable-th-sorted-desc{% endif %}{% endif %}"
                     hx-get="{% url 'patient_records:patient_records_list' %}?sort=allergies&dir={% if sort_field == 'allergies' and sort_dir == 'asc' %}desc{% else %}asc{% endif %}"
-                    hx-target="#datatable-body" hx-include="#patient_records-datatable" style="cursor: pointer;">
+                    hx-target="#datatable-body" hx-include="#patient_records-datatable">
                     {% trans "Allergies" %}
                     <span class="datatable-sort-icon">{% icon "chevron-up-outline" %}</span>
                 </th>
