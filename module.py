@@ -32,3 +32,20 @@ PERMISSIONS = [
 'patient_records.change_treatment',
 'patient_records.manage_settings',
 ]
+
+ROLE_PERMISSIONS = {
+    "admin": ["*"],
+    "manager": [
+        "add_patientrecord",
+        "add_treatment",
+        "change_patientrecord",
+        "change_treatment",
+        "view_patientrecord",
+        "view_treatment",
+    ],
+    "employee": [
+        "add_patientrecord",
+        "view_patientrecord",
+        "view_treatment",
+    ],
+}
