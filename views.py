@@ -3,6 +3,8 @@ Patient Records Module Views
 """
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
+from django.http import HttpResponse
+from django.urls import reverse
 from django.shortcuts import get_object_or_404, render as django_render
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -114,6 +116,7 @@ def patient_records_list(request):
     }
 
 @login_required
+@htmx_view('patient_records/pages/patient_record_add.html', 'patient_records/partials/patient_record_add_content.html')
 def patient_record_add(request):
     hub_id = request.session.get('hub_id')
     if request.method == 'POST':
@@ -133,10 +136,13 @@ def patient_record_add(request):
         obj.medical_notes = medical_notes
         obj.is_active = is_active
         obj.save()
-        return _render_patient_records_list(request, hub_id)
-    return django_render(request, 'patient_records/partials/panel_patient_record_add.html', {})
+        response = HttpResponse(status=204)
+        response['HX-Redirect'] = reverse('patient_records:patient_records_list')
+        return response
+    return {}
 
 @login_required
+@htmx_view('patient_records/pages/patient_record_edit.html', 'patient_records/partials/patient_record_edit_content.html')
 def patient_record_edit(request, pk):
     hub_id = request.session.get('hub_id')
     obj = get_object_or_404(PatientRecord, pk=pk, hub_id=hub_id, is_deleted=False)
@@ -150,7 +156,7 @@ def patient_record_edit(request, pk):
         obj.is_active = request.POST.get('is_active') == 'on'
         obj.save()
         return _render_patient_records_list(request, hub_id)
-    return django_render(request, 'patient_records/partials/panel_patient_record_edit.html', {'obj': obj})
+    return {'obj': obj}
 
 @login_required
 @require_POST
@@ -268,6 +274,7 @@ def treatments_list(request):
     }
 
 @login_required
+@htmx_view('patient_records/pages/treatment_add.html', 'patient_records/partials/treatment_add_content.html')
 def treatment_add(request):
     hub_id = request.session.get('hub_id')
     if request.method == 'POST':
@@ -285,10 +292,13 @@ def treatment_add(request):
         obj.practitioner_id = practitioner_id
         obj.notes = notes
         obj.save()
-        return _render_treatments_list(request, hub_id)
-    return django_render(request, 'patient_records/partials/panel_treatment_add.html', {})
+        response = HttpResponse(status=204)
+        response['HX-Redirect'] = reverse('patient_records:treatments_list')
+        return response
+    return {}
 
 @login_required
+@htmx_view('patient_records/pages/treatment_edit.html', 'patient_records/partials/treatment_edit_content.html')
 def treatment_edit(request, pk):
     hub_id = request.session.get('hub_id')
     obj = get_object_or_404(Treatment, pk=pk, hub_id=hub_id, is_deleted=False)
@@ -301,7 +311,7 @@ def treatment_edit(request, pk):
         obj.notes = request.POST.get('notes', '').strip()
         obj.save()
         return _render_treatments_list(request, hub_id)
-    return django_render(request, 'patient_records/partials/panel_treatment_edit.html', {'obj': obj})
+    return {'obj': obj}
 
 @login_required
 @require_POST
