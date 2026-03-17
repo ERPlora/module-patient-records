@@ -102,3 +102,89 @@ class CreateTreatment(AssistantTool):
             notes=args.get('notes', ''),
         )
         return {"id": str(t.id), "created": True}
+
+
+@register_tool
+class DeletePatient(AssistantTool):
+    name = "delete_patient"
+    description = "Deactivate (soft-delete) a patient record."
+    module_id = "patient_records"
+    required_permission = "patient_records.change_patientrecord"
+    requires_confirmation = True
+    parameters = {
+        "type": "object",
+        "properties": {"patient_id": {"type": "string"}},
+        "required": ["patient_id"],
+        "additionalProperties": False,
+    }
+
+    def execute(self, args, request):
+        from patient_records.models import PatientRecord
+        try:
+            p = PatientRecord.objects.get(id=args['patient_id'])
+            p.is_active = False
+            p.save(update_fields=['is_active', 'updated_at'])
+            return {"deactivated": True, "patient_name": p.patient_name}
+        except PatientRecord.DoesNotExist:
+            return {"error": "Patient not found"}
+
+
+@register_tool
+class UpdatePatientVisit(AssistantTool):
+    name = "update_patient_visit"
+    description = "Update a patient treatment/visit record."
+    module_id = "patient_records"
+    required_permission = "patient_records.change_treatment"
+    requires_confirmation = True
+    parameters = {
+        "type": "object",
+        "properties": {
+            "treatment_id": {"type": "string"},
+            "date": {"type": "string"},
+            "description": {"type": "string"},
+            "diagnosis": {"type": "string"},
+            "prescription": {"type": "string"},
+            "notes": {"type": "string"},
+        },
+        "required": ["treatment_id"],
+        "additionalProperties": False,
+    }
+
+    def execute(self, args, request):
+        from patient_records.models import Treatment
+        try:
+            t = Treatment.objects.get(id=args['treatment_id'])
+        except Treatment.DoesNotExist:
+            return {"error": "Treatment not found"}
+        fields = []
+        for field in ('date', 'description', 'diagnosis', 'prescription', 'notes'):
+            if field in args:
+                setattr(t, field, args[field])
+                fields.append(field)
+        if fields:
+            t.save(update_fields=fields + ['updated_at'])
+        return {"id": str(t.id), "updated": True}
+
+
+@register_tool
+class DeletePatientVisit(AssistantTool):
+    name = "delete_patient_visit"
+    description = "Delete a patient treatment/visit record."
+    module_id = "patient_records"
+    required_permission = "patient_records.delete_treatment"
+    requires_confirmation = True
+    parameters = {
+        "type": "object",
+        "properties": {"treatment_id": {"type": "string"}},
+        "required": ["treatment_id"],
+        "additionalProperties": False,
+    }
+
+    def execute(self, args, request):
+        from patient_records.models import Treatment
+        try:
+            t = Treatment.objects.get(id=args['treatment_id'])
+            t.delete()
+            return {"deleted": True}
+        except Treatment.DoesNotExist:
+            return {"error": "Treatment not found"}
