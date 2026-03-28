@@ -7,6 +7,7 @@ MODULE_ICON = 'medical-outline'
 MODULE_DESCRIPTION = _('Patient medical records, treatments and prescriptions')
 MODULE_AUTHOR = 'ERPlora'
 MODULE_CATEGORY = 'specialized'
+HAS_MODELS = True
 
 MENU = {
     'label': _('Patient Records'),
